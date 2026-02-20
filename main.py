@@ -8,7 +8,17 @@ from app.project import project
 static_folder = Path(__file__).parent / "assets"
 
 app.add_static_files("/assets", str(static_folder))
-ui.add_css("::-webkit-scrollbar { display: none; }")
+ui.add_head_html('<meta charset="UTF-8">', shared=True)
+ui.add_css("::-webkit-scrollbar { display: none; }", shared=True)
+# 如果有乱码，可能需要安装中文字体：
+# sudo apt install fonts-noto-cjk fonts-wqy-microhei
+
+ui.add_css("""
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+                 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+""", shared=True)
 
 
 @ui.page("/")

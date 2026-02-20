@@ -5,6 +5,7 @@ from app.utils import parse_godot_project
 from app.stroge import Storge
 from PIL import Image
 import webview
+from webview import FileDialog
 import uuid
 import os
 
@@ -46,7 +47,7 @@ def project_card():
                     with ui.image(icon):
                         with ui.column().classes("w-full absolute-bottom"):
                             ui.label(project["name"]).classes("text-h6")
-                            ui.label(f"Version: {project["version"]}").classes(
+                            ui.label(f"Version: {project['version']}").classes(
                                 "text-subtitle2"
                             )
                     with ui.card_section():
@@ -77,7 +78,7 @@ def project_list():
     project_manager.init()
 
     async def import_project():
-        file = await app.native.main_window.create_file_dialog(dialog_type=webview.FOLDER_DIALOG, allow_multiple=False, file_types=())  # type: ignore
+        file = await app.native.main_window.create_file_dialog(FileDialog.FOLDER, allow_multiple=False)  # type: ignore
         if not file:
             return
         folder = file[0]
@@ -107,7 +108,7 @@ def project_list():
             search_input = (
                 ui.input(placeholder="搜索", on_change=project_card.refresh)
                 .classes("w-64")
-                .props("outlined dense")
+                .props("outlined dense clearable")
                 .bind_value(project_manager, "search")
             )
             with search_input.add_slot("prepend"):

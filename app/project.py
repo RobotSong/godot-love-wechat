@@ -5,6 +5,7 @@ from nicegui import run, ui, app
 from nicegui.elements.dialog import Dialog
 from nicegui.elements.tree import Tree
 import webview
+from webview import FileDialog
 import os
 from app import gdscripts, utils
 from app.stroge import Storge
@@ -128,7 +129,7 @@ def project_info(project):
             ui.image(icon).classes("w-32 h-32")
         with ui.column(align_items="baseline").classes("w-2/5 mt-2"):
             ui.label(project["name"]).classes("text-h6")
-            ui.label(f"Version: {project["version"]}").classes("text-subtitle2")
+            ui.label(f"Version: {project['version']}").classes("text-subtitle2")
             ui.label(project["description"]).classes("text-caption")
 
         ui.space()
@@ -162,7 +163,7 @@ def export_config(project):
         export_settings.from_dict(project_export_settings)
 
     async def chosse_export_path():
-        file = await app.native.main_window.create_file_dialog(dialog_type=webview.FOLDER_DIALOG, allow_multiple=False, file_types=())  # type: ignore
+        file = await app.native.main_window.create_file_dialog(FileDialog.FOLDER, allow_multiple=False)  # type: ignore
         if file:
             export_settings.export_path = file[0]
 
@@ -271,7 +272,7 @@ def subpacks_ui(modal: Dialog, tree: Tree):
                 ui.badge(subpack_type[task["subpack_type"]])
                 if task.get("cdn_path"):
                     cdn_path = os.path.join(
-                        task.get("cdn_path", ""), f"{task["name"]}.zip"
+                        task.get("cdn_path", ""), f"{task['name']}.zip"
                     )
                     ui.label(f"CDN目录: {cdn_path}")
                 ui.space()

@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from nicegui import ui, app, run
 from app.stroge import Storge
 import webview
+from webview import FileDialog
 
 
 @dataclass
@@ -42,12 +43,12 @@ def settings():
 
     async def choose_godot():
         file_types = ("Godot Execute (*.exe)",)
-        file = await app.native.main_window.create_file_dialog(dialog_type=webview.OPEN_DIALOG, allow_multiple=False, file_types=file_types)  # type: ignore
+        file = await app.native.main_window.create_file_dialog(FileDialog.OPEN, allow_multiple=False, file_types=file_types)  # type: ignore
         if file:
             setting_item.godot_execute = file[0]
 
     async def choose_wechat():
-        file = await app.native.main_window.create_file_dialog(dialog_type=webview.FOLDER_DIALOG, allow_multiple=False, file_types=())  # type: ignore
+        file = await app.native.main_window.create_file_dialog(FileDialog.FOLDER, allow_multiple=False)  # type: ignore
         if file:
             setting_item.wechat_execute = file[0]
 
